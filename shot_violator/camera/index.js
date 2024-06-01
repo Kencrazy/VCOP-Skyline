@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Image, Text,SafeAreaView,TouchableOpacity,ScrollView } from 'react-native';
+import { View, Button, Image, Text,SafeAreaView,TouchableOpacity,ScrollView,Alert } from 'react-native';
 import { recognizePlate } from '../../API/Platerecognizer/recognition';
 import { styles } from './styles';
 import { getInfoFromPlateNumber } from '../../API/Firebase/getIDfromPlate';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator  from 'expo-image-manipulator';
 
 export default function ViolatorContact({navigation}) {
   const [imageUri, setImageUri] = useState(null);
-  const [plateNumber, setPlateNumber] = useState(null);
+  const [plateNumber, setPlateNumber] = useState("");
   // const [violator_id,setID]=useState("")
   // const [violator_id,setID]=useState("")
 
@@ -23,30 +24,63 @@ export default function ViolatorContact({navigation}) {
   const handleTakePhoto = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4,3],
-      quality: 0.8,
+      allowsEditing: false,
+      aspect: [1,1],
+      quality: 1,
     });
-    console.log('result.uri', result.assets[0].uri);
-    setImageUri(result.assets[0].uri);
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri)
+      // setImageUri(await resizeImage(result.assets[0].uri))
+    }
+    // const plateData = await recognizePlate(imageUri)
+    
+
+    
+
+
+
+      // console.log(plateData);
+      
+
+    //   console.log('License Plate Data:', plateData);
+    
   };
+
+  useEffect(() => {
+    const resizeImage = async (uri) => {
+      const manipResult = await ImageManipulator.manipulateAsync(
+        uri,
+        [{ resize: { width: 800, height: 600 } }],
+        { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+      );
+      return manipResult.uri
+    };
+    if (imageUri) {
+      const updatePlateNumber = async () => {
+        const recognizedPlate = await recognizePlate(await resizeImage(imageUri));
+        setPlateNumber(recognizedPlate);
+      };
+      updatePlateNumber();
+    }
+  }, [imageUri]);
+
 
 
   const handleRecognizePlate = async () => {
     try {
-      const plateData = await recognizePlate(imageUri);
-      setPlateNumber(plateData);
-      console.log(plateData);
-
-      const violator_id = await getInfoFromPlateNumber("43A37302")
-      navigation.navigate("info",{id:violator_id,plateNum: "43A37302"})
-      setPlateNumber("43A37302")
-
-    //   console.log('License Plate Data:', plateData);
+      if (plateNumber) {
+        const violator_id = await getInfoFromPlateNumber(plateNumber);
+        if (violator_id) {
+          navigation.navigate("info", { id: violator_id, plateNum: plateNumber });
+        } else {
+          Alert.alert("Người dùng không có trong hệ thống, hãy kiểm tra có quét đúng biển số không");
+        }
+      } else {
+        Alert.alert("Người dùng không có trong hệ thống, hãy kiểm tra có quét đúng biển số không");
+      }
     } catch (error) {
       console.error('Error recognizing plate:', error);
     }
-    // navigation here
   };
 
   return (
@@ -68,7 +102,7 @@ export default function ViolatorContact({navigation}) {
             <View>
               <Text >Biển số xe được nhận diện:{plateNumber} </Text>
             </View>
-            <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate("Des0",{plateNum:"43A37302"})}>
+            <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate("Des0",{plateNum:plateNumber})}>
               <Text>Tạo biên bản thủ công</Text>
             </TouchableOpacity>
 

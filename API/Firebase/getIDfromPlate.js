@@ -4,37 +4,24 @@ import { collection, doc, setDoc, getDoc, query, where,getDocs} from 'firebase/f
 import { useState } from 'react';
 
 
-export const getInfoFromPlateNumber = async ( plateNumber ) => {
-    const q = query(collection(db,"vcop"))
-    const querySnapshot = await getDocs(q);
-    let documentId 
-    // const [data,setData]=useState()
-    // let plateInfo = []
-  
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data();
-      const data = userData.plateNum
-      // console.log(doc.id);
-      // console.log(userData.plateNum[1]);
-      for(let i = 0 ; i<= data.length-1; i=i+1){
-        // setData( userData.plateNum[i])
-        
-        if (data[i].plateNumb === plateNumber) {
-          documentId = doc.id;
-          break
-          
-          
-          // console.log('This is the owner of the car:', plateNumber);
-          // console.log(doc.id);
+export const getInfoFromPlateNumber = async (plateNumber) => {
+  const q = query(collection(db, "vcop"));
+  const querySnapshot = await getDocs(q);
+  let documentId = null;
 
-        }
+  for (const doc of querySnapshot.docs) {
+    const userData = doc.data();
+    const data = userData.plateNum;
+    
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].plateNumb === plateNumber) {
+        documentId = doc.id;
+        return documentId; // Early return with the found documentId
+      }
     }
-    });
-    // console.log(plateInfo);
-    return documentId;
-
-  
-  };
+  }
+  return documentId; // Returns null if not found
+};
 
   export const GetDocIDFromUserID= async(violator_id)=>{
     console.log(violator_id);

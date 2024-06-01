@@ -18,12 +18,14 @@ export async function recognizePlate(imageUri) {
 
     const response = await axios.post('https://api.platerecognizer.com/v1/plate-reader/', formData, config);
     const plateData = response.data.results[0];
-    console.log(plateData);
-    
-    
+    return plateData.plate;
   } catch (error) {
-    console.error('Error scanning plate number:', error);
+    if (error.response && error.response.status === 400) {
+      console.error('Error scanning plate number: Invalid request format');
+    } else {
+      console.error('Error scanning plate number:', error);
+    }
     console.log("hello");
-    return null;
+    return false;
   }
 }

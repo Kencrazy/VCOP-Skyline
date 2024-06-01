@@ -3,8 +3,10 @@ import { SafeAreaView, View, Text, Image, TouchableOpacity, ScrollView } from "r
 import {styles} from './styles'
 import GetUser from "../../API/Firebase/get";
 
+
 export default function ViolatorInf({navigation,route}){
     const {id,plateNum}=route.params
+    console.log(id,plateNum);
     // console.log(id);
     const [violator_name,setName]=useState("")
     const [violator_phone,setPhone]=useState("")

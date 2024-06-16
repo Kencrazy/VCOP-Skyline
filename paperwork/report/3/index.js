@@ -31,6 +31,7 @@ export default function Report3({ navigation, route }) {
     const tyear = today.getFullYear();
     const position = 'Người có thẩm quyền';
     const [id2,setID2]=useState()
+    const place = item.address
 
     const getData = useCallback(async () => {
         const user_info = await GetUser(item.id);
@@ -124,7 +125,7 @@ export default function Report3({ navigation, route }) {
                     <Text>Đã thực hiện hành vi vi phạm hành chính </Text>
                     <Text>{item.violator}</Text>
                     </View>
-                    <Text>Địa điểm xảy ra vi phạm: đường Lê Văn Hiến</Text>
+                    <Text>Địa điểm xảy ra vi phạm: {place}</Text>
                     <Text>Các tình tiết liên quan đến giải quyết vi phạm (nếu có): </Text>
 
                     <Text style={{marginTop:"5%"}}><Text style={styles.black}>Điều 2.</Text> Các hình thức xử phạt và biện pháp khắc phục hậu quả được áp dụng:</Text>

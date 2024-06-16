@@ -16,7 +16,7 @@ export default function Observe({navigation,route}){
     const day = today.getDate()
     const month = today.getMonth()+1
     const year = today.getFullYear()
-    const place = "đường Lê Văn Hiến"
+    const place = item.address
     const [police_name,setPName]=useState("")
     const [position,setPos]=useState("")
     const [violator_name,setVName]=useState("")

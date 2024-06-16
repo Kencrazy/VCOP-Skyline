@@ -44,7 +44,8 @@ export default function SetAppointment({route,navigation}){
                 type:3,
                 district:"Hai Chau",
                 city: "Da Nang",
-                plateNum: item.item.plateNum
+                plateNum: item.item.plateNum,
+                address: item.address
             };
         
             // Update the police_violate array

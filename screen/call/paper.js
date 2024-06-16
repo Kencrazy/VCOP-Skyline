@@ -17,7 +17,7 @@ export default function ErrorFound({navigation,route}){
     const day = today.getDate()
     const month = today.getMonth()+1
     const year = today.getFullYear()
-    const place = "đường Lê Văn Hiến"
+    const place = item.address
     const [police_name,setPName]=useState("")
     const [position,setPos]=useState("")
     const [violator_name,setVName]=useState("")
@@ -87,7 +87,8 @@ export default function ErrorFound({navigation,route}){
               date: `${day}/${month}/${year}`,
               time: `${hour}:${minute}`,
               violator: item.violator,
-              plateNum:plateNum
+              plateNum:plateNum,
+              address: place
             };
         
             // Update the police_violate array

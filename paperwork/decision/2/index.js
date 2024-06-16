@@ -5,7 +5,7 @@ import { db } from "../../../API/Firebase/firebaseConfig";
 import GetUser from "../../../API/Firebase/get";
 import RNPickerSelect from 'react-native-picker-select';
 import { getDownloadURL,ref,getStorage } from "firebase/storage";
-
+import fetchAddress from "../../../components/fetchAddress";
 
 export default function Decision2({navigation,route}){
     
@@ -17,6 +17,14 @@ export default function Decision2({navigation,route}){
     const month = today.getMonth()+1
     const year = today.getFullYear()
     const [violator,setViolator]=useState()
+    const [place,setPlace]=useState()
+    useEffect(()=>{
+      const handleGetAddress = async ()=>{
+        const address = await fetchAddress()
+        setPlace(address)
+      }
+      handleGetAddress()
+    },[id])
 
     const storage = getStorage();
     const imagePath = `${id}/sign/sign.png`;
@@ -74,7 +82,8 @@ export default function Decision2({navigation,route}){
             violator:violator,
             date: `${day}/${month}/${year}`,
             time: `${hour}:${minute}`,
-            plateNum:plateNum
+            plateNum:plateNum,
+            address: place
         };
     
         // Update the police_violate array
@@ -123,7 +132,7 @@ const handleValueChange = (value) => {
                 />
             </View>
             <Text style={{fontSize:13,fontWeight:"bold",marginTop:20}}>Vào hồi: {hour} giờ {minute} phút</Text>
-            <Text style={{fontSize:13,fontWeight:"bold",marginTop:20}}>Ngày {day} tháng {month} năm {year}, tại đường Lê Văn Hiến</Text>
+            <Text style={{fontSize:13,fontWeight:"bold",marginTop:20}}>Ngày {day} tháng {month} năm {year}, tại {place}</Text>
 
             <Text style={{fontSize:13,fontWeight:"bold",marginTop:20}}>Đề nghị: ông/bà trong vòng 20 ngày làm việc(kể từ thời điểm nhận được thông báo), đặt lịch làm việc với cơ quan chức năng để giải quyết vụ việc theo quy định của pháp luật</Text>
             <Text style={{fontSize:13,fontWeight:"bold",marginTop:20}}>Nếu ông/bà không chấp hành,cơ quan chức năng sẽ tiến hành các biện pháp khác để xử lý, đồng thời thông báo các đơn vị đăng kiểm xe để phối hợp xử lý theo quy định</Text>

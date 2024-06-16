@@ -1,4 +1,4 @@
-import {View,SafeAreaView,Text,FlatList, TouchableOpacity} from "react-native"
+import {View,SafeAreaView,Text,FlatList, TouchableOpacity,Image} from "react-native"
 import Header from "../../components/mainhomeheader"
 import HomeInfo from "../../components/homeinfo"
 import FunctionButton from "../../components/functionButton"
@@ -8,7 +8,8 @@ import React,{useState,useEffect} from "react"
 
 // Testing
 import GetUser from "../../API/Firebase/get"
-
+import * as Location from "expo-location"
+import axios from "axios"
 
 export default function PoliceHome({navigation,route}){
     // const id = "2G842DINTNlF8pk7fz1X"
@@ -49,6 +50,43 @@ export default function PoliceHome({navigation,route}){
         navigation.navigate("Working",{id:id})
     }
 
+    const [streetName, setStreetName] = useState('');
+
+//     useEffect(() => {
+//       const getLocation = async () => {
+//         try {
+//           // Request location permissions
+//           const { status } = await Location.requestForegroundPermissionsAsync();
+//           if (status !== 'granted') {
+//             setStreetName('Unable to retrieve location');
+//             return;
+//           }
+  
+//           // Get the user's current location
+//           const location = await Location.getCurrentPositionAsync({});
+//           const { latitude, longitude } = location.coords;
+  
+//           // Use the OpenStreetMap Nominatim API to reverse geocode the location
+//           const overpassQuery = `[out:json];
+// node(${latitude},${longitude},${latitude},${longitude});
+// out body;`;
+
+// const response = await fetch(
+//     `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`
+//   );
+//   const data = await response.json();
+
+//   // Extract the name from the response
+//   const name = data.elements[0].tags.name;
+//           setStreetName(name);
+//         } catch (error) {
+//           console.error('Error:', error);
+//           setStreetName('Unknown location');
+//         }
+//       };
+  
+//       getLocation();
+//     }, []);
 
 
     return(
@@ -68,6 +106,12 @@ export default function PoliceHome({navigation,route}){
                 </View>
 
 
+            </View>
+
+            <View style={{position:"absolute",bottom:40,right:10}}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Chatbot")}>
+            <Image source={require("../../assets/robot-assistant.png")}/>
+            </TouchableOpacity>
             </View>
 
             <FlatList

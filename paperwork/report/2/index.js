@@ -6,13 +6,21 @@ import {styles} from "./styles"
 import GetUser from '../../../API/Firebase/get'
 import { getStorage,ref,getDownloadURL } from 'firebase/storage'
 import RNPickerSelect from 'react-native-picker-select';
-
+import fetchAddress from '../../../components/fetchAddress'
 
 export default function Report2({navigation,route}){
     const{id,violator_id,plateNum}=route.params
     const [violator,setViolator]=useState()
     const fine=400000
 
+    const [place,setPlace]=useState()
+    useEffect(()=>{
+      const handleGetAddress = async ()=>{
+        const address = await fetchAddress()
+        setPlace(address)
+      }
+      handleGetAddress()
+    },[])
     const storage = getStorage();
     const imagePath = `${id}/sign/sign.png`;
     const imagePathViolator = `${violator_id}/sign/sign.png`
@@ -21,6 +29,9 @@ export default function Report2({navigation,route}){
   const [downloadURL, setDownloadURL] = useState(null);
   const [downloadURL2, setDownloadURL2] = useState(null);
   const [error, setError] = useState(null);
+
+  
+
 
   const [sign,setSign]=useState()
   const [sign2,setSign2]=useState()
@@ -208,7 +219,7 @@ const handleValueChange = (value) => {
         ]}
       />
                     </View>
-                    <Text>Địa điểm xảy ra vi phạm: đường Lê Văn Hiến</Text>
+                    <Text>Địa điểm xảy ra vi phạm: {place}</Text>
                     <Text>Các tình tiết liên quan đến giải quyết vi phạm (nếu có): </Text>
 
                     <Text style={{marginTop:"5%"}}><Text style={styles.black}>Điều 2.</Text> Các hình thức xử phạt và biện pháp khắc phục hậu quả được áp dụng:</Text>

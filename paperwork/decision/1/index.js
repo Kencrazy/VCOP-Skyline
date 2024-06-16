@@ -6,6 +6,7 @@ import GetUser from "../../../API/Firebase/get";
 // import Picker from "@react-native-picker/picker"
 import { getDownloadURL,ref,getStorage } from "firebase/storage";
 import RNPickerSelect from 'react-native-picker-select';
+import fetchAddress from "../../../components/fetchAddress";
 
 export default function Decision1({navigation,route}){
     // const {violator_id} = route.params
@@ -17,7 +18,14 @@ export default function Decision1({navigation,route}){
     const day = today.getDate()
     const month = today.getMonth()+1
     const year = today.getFullYear()
-    const place = "đường Lê Văn Hiến"
+    const [place,setPlace]=useState()
+    useEffect(()=>{
+      const handleGetAddress = async ()=>{
+        const address = await fetchAddress()
+        setPlace(address)
+      }
+      handleGetAddress()
+    },[id])
     const [police_name,setPName]=useState("")
     const [position,setPos]=useState("")
     const [violator_name,setVName]=useState("")
@@ -128,7 +136,8 @@ export default function Decision1({navigation,route}){
               date: `${day}/${month}/${year}`,
               time: `${hour}:${minute}`,
               violator: violator,
-              plateNum:plateNum
+              plateNum:plateNum,
+              address: place
             };
         
             // Update the police_violate array

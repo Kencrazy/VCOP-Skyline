@@ -11,7 +11,7 @@ export async function recognizePlate(imageUri) {
 
     const config = {
       headers: {
-        'Authorization': 'Token b983ba59d336577582c110652892a336d78fc2c8',
+        'Authorization': 'Token ae4d61440b95fbb1792cbaa14008bbc5290308c6',
         'Content-Type': 'multipart/form-data',
       },
     };

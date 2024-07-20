@@ -2,7 +2,7 @@ import {View,SafeAreaView,Text,FlatList, TouchableOpacity} from "react-native"
 import Header from "../../components/mainhomeheader"
 import HomeInfo from "../../components/homeinfo"
 import FunctionButton from "../../components/functionButton"
-import { Dimensions } from "react-native"
+import { Dimensions,Image } from "react-native"
 import { styles } from "./styles"
 import React,{useState,useEffect} from "react"
 
@@ -77,6 +77,12 @@ export default function AuthorityHome({navigation,route}){
                         return(<HomeInfo item={item}/>)
                     }
                 }}/>
+
+<View style={{position:"absolute",bottom:40,right:10}}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Chatbot")}>
+            <Image source={require("../../assets/robot-assistant.png")}/>
+            </TouchableOpacity>
+            </View>
         </View>
     )
 }

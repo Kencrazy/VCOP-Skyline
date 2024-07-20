@@ -6,6 +6,7 @@ import Report3 from "../paperwork/report/3";
 import Done from "../paperwork/done";
 import Decision1 from "../paperwork/decision/1";
 import Observe from "./decision_maker/paper";
+import ChatBot from "../components/chatbot";
 const Stack = createNativeStackNavigator()
 
 export default function KenJu({route}){
@@ -19,6 +20,8 @@ export default function KenJu({route}){
             <Stack.Screen name="Observe" component={Observe} options={{headerShown:true}}/>
             <Stack.Screen name="report3" component={Report3} initialParams={{id}} options={{headerShown:true}}/>
             <Stack.Screen name="Done" component={Done}/>
+            <Stack.Screen name="Chatbot" component={ChatBot} options={{headerShown:true,headerBackTitleVisible:false}}/>
+            
         </Stack.Navigator>
     )
 }

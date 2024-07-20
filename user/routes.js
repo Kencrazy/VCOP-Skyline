@@ -12,6 +12,7 @@ import Report1 from "../paperwork/report/1";
 import Senko from "../screen/EWallet/routes";
 // import VoiceCallPage from "../screen/call";
 import Chat from "../screen/call";
+import ChatBot from "../components/chatbot";
 import { TouchableOpacity,Image,Linking } from "react-native";
 // import ChatHeader from "../components/chatHeader";
 
@@ -44,6 +45,8 @@ export default function UserRoutes({ route }){
             <Theme.Screen name="Calendar" component={SetAppointment} initialParams={{id}}/>
             <Theme.Screen name="Report" component={Report1} options={{headerShown:true}}/>
             <Theme.Screen name="Chat" component={Chat} options={{headerShown:true}} initialParams={{id}}/>
+            <Theme.Screen name="Chatbot" component={ChatBot} options={{headerShown:true,headerBackTitleVisible:false}}/>
+
         </Theme.Navigator>
     )
 }
